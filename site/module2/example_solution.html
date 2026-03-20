@@ -1133,10 +1133,7 @@ git<span class="w"> </span>push
 <p>Подключите в конце <code>applications.html</code> (перед <code>&lt;/body&gt;</code>):</p>
 <div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">"/slider.js"</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 </code></pre></div>
-<p>Добавьте маршрут в <code>backend/app.py</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/slider.js"</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">slider_js</span><span class="p">():</span> <span class="k">return</span> <span class="n">send_from_directory</span><span class="p">(</span><span class="n">FRONTEND_DIR</span><span class="p">,</span> <span class="s2">"slider.js"</span><span class="p">)</span>
-</code></pre></div>
+<p>Маршрут <code>/slider.js</code> уже добавлен в <code>backend/app.py</code> на этапе Модуля 1 — ничего менять не нужно.</p>
 <hr>
 <h2 id="5">5. Обновление страниц (дизайн + валидация)</h2>
 <h3 id="51-registerhtml">5.1. <code>register.html</code> — валидация на форме</h3>
