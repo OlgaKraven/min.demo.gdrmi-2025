@@ -1,0 +1,17 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Регистрация — Корочки.есть</title><link rel="stylesheet" href="/styles.css"></head>
+<body><div class="container"><h1>Регистрация</h1><div class="card"><form id="f" novalidate>
+<div class="field"><label>Логин</label><input name="login" required minlength="6" pattern="^[A-Za-z0-9]{6,}$" placeholder="Латиница/цифры, от 6 символов"><div class="field-hint error" id="loginErr" style="display:none"></div></div>
+<div class="field"><label>Пароль</label><input name="password" type="password" required minlength="8" placeholder="Минимум 8 символов"><div class="field-hint error" id="passErr" style="display:none"></div></div>
+<div class="field"><label>ФИО</label><input name="full_name" required placeholder="Кириллица и пробелы"><div class="field-hint error" id="nameErr" style="display:none"></div></div>
+<div class="field"><label>Телефон</label><input name="phone" required pattern="^8\(\d{3}\)\d{3}-\d{2}-\d{2}$" placeholder="8(XXX)XXX-XX-XX"><div class="field-hint error" id="phoneErr" style="display:none"></div></div>
+<div class="field"><label>Email</label><input name="email" type="email" required placeholder="name@example.com"><div class="field-hint error" id="emailErr" style="display:none"></div></div>
+<div class="actions"><button type="submit">Зарегистрироваться</button></div><p id="msg" class="msg"></p></form></div>
+<p><a href="/login">Уже зарегистрированы? Войти</a></p></div>
+<script>
+const f=document.getElementById("f"),msg=document.getElementById("msg");
+const fds=[{n:"login",e:"loginErr",t:"Логин: латиница/цифры, от 6 символов"},{n:"password",e:"passErr",t:"Пароль: не менее 8 символов"},{n:"full_name",e:"nameErr",t:"ФИО: только кириллица и пробелы"},{n:"phone",e:"phoneErr",t:"Телефон: формат 8(XXX)XXX-XX-XX"},{n:"email",e:"emailErr",t:"Укажите корректный email"}];
+function validate(){let ok=true;for(const fd of fds){const el=f[fd.n],err=document.getElementById(fd.e);if(!el.validity.valid){el.classList.add("is-error");el.classList.remove("is-ok");err.textContent=fd.t;err.style.display="block";ok=false;}else{el.classList.remove("is-error");el.classList.add("is-ok");err.style.display="none";}}return ok;}
+f.addEventListener("submit",async e=>{e.preventDefault();msg.textContent="";if(!validate())return;
+const res=await fetch("/api/register",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({login:f.login.value.trim(),password:f.password.value,full_name:f.full_name.value.trim(),phone:f.phone.value.trim(),email:f.email.value.trim()})});
+const j=await res.json().catch(()=>({}));msg.textContent=res.ok?"Пользователь зарегистрирован.":j.error||"Ошибка.";msg.className=res.ok?"msg ok":"msg error";if(res.ok){f.reset();for(const fd of fds)f[fd.n].className="";}});
+</script></body></html>
